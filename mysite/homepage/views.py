@@ -16,12 +16,12 @@ def signup_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Save the user but don't commit to the database yet, so we can fix the last_login field
-            user = form.save(commit=False)
-            # Explicitly set last_login the way PostgreSQL expects (Django handles this perfectly)
-            user.last_login = None
-            user.save() # Now save the fully valid user to your permanent database
-            return redirect("login")
+            # Save the new user to the database
+            user = form.save()
+            # Django's login() function automatically sets last_login to RIGHT NOW, no nulls, PostgreSQL accepts this perfectly
+            login(request, user)
+            # Send the new logged-in user to your create post page, which is what users expect
+            return redirect("create_post")
     else:
         form = UserCreationForm()
     return render(request, "blog/signup.html", {"form": form})
