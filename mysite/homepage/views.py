@@ -10,19 +10,23 @@ from django.core.management import call_command # <-- New import
 def landing_page(request):
     return render(request, 'blog/landing.html')
 
+from django.contrib.auth.models import User # Add this at the top with other imports
+
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
+            # Create the user the standard Django way
+            user = User.objects.create_user(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
             login(request, user)
             return redirect('create_post')
     else:
         form = SignUpForm()
     return render(request, 'blog/signup.html', {'form': form})
-
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
