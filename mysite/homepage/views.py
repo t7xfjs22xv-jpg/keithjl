@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-# Added missing UserCreationForm import here to fix your NameError
+from django.utils import timezone
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User 
 from django.core.management import call_command
@@ -16,11 +16,12 @@ def signup_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            # Save the new user to the database
-            user = form.save()
-            # Django's login() function automatically sets last_login to RIGHT NOW, no nulls, PostgreSQL accepts this perfectly
+            user = form.save(commit=False)
+            # Set last_login to a real, valid current timestamp (no more nulls!)
+            user.last_login = timezone.now()
+            user.save()
+            # Log the new user in automatically
             login(request, user)
-            # Send the new logged-in user to your create post page, which is what users expect
             return redirect("create_post")
     else:
         form = UserCreationForm()
