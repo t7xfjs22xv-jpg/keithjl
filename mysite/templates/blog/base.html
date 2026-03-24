@@ -14,7 +14,7 @@
       <nav>
         <a href="{% url 'landing' %}">Home</a> •
         <a href="{% url 'about' %}">About</a> •
-        <a href="{% url 'blog' %}">Writing Wall</a> •
+        <a href="{% url 'blog_view' %}">Writing Wall</a> •
         <a href="{% url 'create_post' %}">Create</a> •
         {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>
