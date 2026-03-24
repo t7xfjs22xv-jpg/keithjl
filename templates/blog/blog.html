@@ -1,0 +1,37 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Writing Wall</h2>
+  <form method="get" style="margin-bottom: 12px;">
+    <input class="form-control" type="text" name="q" placeholder="Search" value="{{ query }}" />
+    <select class="form-control" name="category" style="margin-top: 8px;">
+      <option value="">All themes</option>
+      <option value="love" {% if category == 'love' %}selected{% endif %}>Love</option>
+      <option value="life" {% if category == 'life' %}selected{% endif %}>Life</option>
+      <option value="hope" {% if category == 'hope' %}selected{% endif %}>Hope</option>
+      <option value="youth" {% if category == 'youth' %}selected{% endif %}>Youth</option>
+      <option value="pain" {% if category == 'pain' %}selected{% endif %}>Pain</option>
+      <option value="dreams" {% if category == 'dreams' %}selected{% endif %}>Dreams</option>
+      <option value="other" {% if category == 'other' %}selected{% endif %}>Other</option>
+    </select>
+    <button class="btn" type="submit" style="margin-top: 10px;">Filter</button>
+  </form>
+</div>
+
+{% for post in posts %}
+<div class="card">
+  <h3><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h3>
+  <p class="small-meta">{{ post.category|default:'Uncategorized' }} • by {{ post.user.username }} • {{ post.created_at|date:'M d, Y H:i' }}</p>
+  <p class="post-preview">{{ post.content|slice:':220' }}{% if post.content|length > 220 %}...{% endif %}</p>
+  <div>
+    <form class="like-form" action="{% url 'like_post' post.id %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="button" class="btn like-button" data-post-id="{{ post.id }}">❤️ Like</button>
+      <span id="likes-{{ post.id }}">{{ post.likes }}</span>
+    </form>
+  </div>
+</div>
+{% empty %}
+<p>No writings found. <a href="{% url 'create_post' %}">Write the first story</a>.</p>
+{% endfor %}
+{% endblock %}

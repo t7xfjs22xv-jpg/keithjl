@@ -1,0 +1,26 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Create a New Writing</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div>
+      <label>Title</label>
+      {{ form.title }}
+      {{ form.title.errors }}
+    </div>
+    <div>
+      <label>Category</label>
+      {{ form.category }}
+      {{ form.category.errors }}
+    </div>
+    <div>
+      <label>Writing</label>
+      {{ form.content }}
+      {{ form.content.errors }}
+    </div>
+    <button class="btn" type="submit">Publish</button>
+  </form>
+</div>
+{% endblock %}
