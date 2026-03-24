@@ -1,10 +1,15 @@
 {% extends 'blog/base.html' %}
+
 {% block content %}
-<div class="card" style="text-align: center;">
-  <h2>Welcome to Whispers of Ink</h2>
-  <p>
-    a quiet space where thoughts become words and emotions flow through poetry.
-  </p>
-  <a class="btn" href="{% url 'login' %}">Enter the Library</a>
+<div style="margin-top: 15vh; text-align: center;">
+    <h1 style="font-family: 'Playfair Display', serif; font-size: 4.5rem; line-height: 1.1; margin-bottom: 2rem;">
+        Give your words <br> <span style="font-style: italic;">a quiet home.</span>
+    </h1>
+    <p style="color: var(--accent); font-size: 1.1rem; max-width: 500px; margin: 0 auto 3rem; line-height: 1.8;">
+        A professional space for authors and poets to share their craft in a distraction-free library of thought.
+    </p>
+    <div>
+        <a href="{% url 'blog_view' %}" class="btn-primary">Explore the Wall</a>
+    </div>
 </div>
 {% endblock %}

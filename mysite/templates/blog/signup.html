@@ -1,28 +1,46 @@
 {% extends 'blog/base.html' %}
-{% block content %}
-<div class="card">
-  <h2>Sign Up</h2>
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {{ form.non_field_errors }}
 
-    <div>
-      <label>Username</label>
-      {{ form.username }}
-      {{ form.username.errors }}
-    </div>
-    <div>
-      <label>Password</label>
-      {{ form.password1 }}
-      {{ form.password1.errors }}
-    </div>
-    <div>
-      <label>Confirm Password</label>
-      {{ form.password2 }}
-      {{ form.password2.errors }}
-    </div>
-    <button class="btn" type="submit">Sign Up</button>
-  </form>
-  <p>Already a poet? <a href="{% url 'login' %}">Log in</a></p>
+{% block content %}
+<div style="max-width: 450px; margin: 8vh auto; padding: 3rem; background: #fff; border: 1px solid var(--border); border-radius: 2px; animation: fadeIn 0.8s ease;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; margin-bottom: 0.5rem; text-align: center;">Join the Library</h2>
+    <p style="text-align: center; color: var(--accent); font-size: 0.85rem; margin-bottom: 2.5rem; letter-spacing: 0.5px;">Create an account to start sharing your voice.</p>
+    
+    <form method="POST" style="display: flex; flex-direction: column; gap: 1.2rem;">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <label style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; color: #444;">
+                    {{ field.label }}
+                </label>
+                <div style="border-bottom: 1px solid var(--border); padding: 5px 0;">
+                    {{ field }}
+                </div>
+                {% if field.errors %}
+                    <small style="color: #bc4749; font-size: 0.75rem;">{{ field.errors.0 }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn-primary" style="border: none; cursor: pointer; margin-top: 1.5rem; padding: 15px;">Create Account</button>
+    </form>
+
+    <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem; color: var(--accent);">
+        Already a member? <a href="{% url 'login' %}" style="color: #000; font-weight: 600; text-decoration: none;">Sign In</a>
+    </p>
 </div>
+
+<style>
+    /* This makes the Django-generated inputs look modern */
+    input {
+        width: 100%;
+        border: none !important;
+        background: transparent !important;
+        outline: none !important;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.95rem;
+        padding: 5px 0;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
 {% endblock %}

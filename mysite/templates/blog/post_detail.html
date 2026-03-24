@@ -1,38 +1,49 @@
 {% extends 'blog/base.html' %}
+
 {% block content %}
-<div class="card">
-  <h2>{{ post.title }}</h2>
-  <p class="small-meta">{{ post.category|default:'Uncategorized' }} • by {{ post.user.username }} • {{ post.created_at|date:'M d, Y H:i' }}</p>
-  <p style="white-space: pre-wrap;">{{ post.content }}</p>
-  <div>
-    <button class="btn like-button" data-post-id="{{ post.id }}">❤️ Like</button>
-    <span id="likes-{{ post.id }}">{{ post.likes }}</span>
-  </div>
-</div>
+<article style="max-width: 650px; margin: 8vh auto; animation: fadeIn 1s ease;">
+    <header style="text-align: center; margin-bottom: 5rem;">
+        <div style="display: inline-block; padding: 5px 15px; background: #f0f0f0; border-radius: 50px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; color: #555;">
+            {{ post.category }}
+        </div>
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3.5rem; line-height: 1.2; margin: 0 0 1.5rem; font-weight: 700;">
+            {{ post.title }}
+        </h1>
+        <div style="color: var(--accent); font-size: 0.9rem; letter-spacing: 0.5px;">
+            By <span style="color: var(--text); font-weight: 600;">{{ post.user.username }}</span> • {{ post.created_at|date:"F d, Y" }}
+        </div>
+    </header>
 
-<div class="card">
-  <h3>Comments</h3>
-  <ul class="comment-list">
-    {% for comment in comments %}
-    <li class="comment-item">
-      <p><strong>{{ comment.user.username }}</strong> <span class="small-meta">{{ comment.created_at|date:'M d, Y H:i' }}</span></p>
-      <p>{{ comment.text }}</p>
-    </li>
-    {% empty %}
-    <li>No comments yet. Be the first to share support.</li>
-    {% endfor %}
-  </ul>
+    <div style="font-size: 1.25rem; line-height: 2.2; color: #222; margin-bottom: 5rem; white-space: pre-wrap; font-family: 'Inter', sans-serif;">
+        {{ post.content }}
+    </div>
 
-  {% if user.is_authenticated %}
-  <form method="post" action="{% url 'add_comment' post.id %}">
-    {% csrf_token %}
-    {{ comment_form.non_field_errors }}
-    {{ comment_form.text }}
-    {{ comment_form.text.errors }}
-    <button class="btn" type="submit">Add Comment</button>
-  </form>
-  {% else %}
-  <p><a href="{% url 'login' %}">Log in</a> to comment.</p>
-  {% endif %}
-</div>
+    <footer style="border-top: 1px solid var(--border); padding-top: 3rem; margin-bottom: 10vh;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="{% url 'blog_view' %}" style="text-decoration: none; color: var(--accent); font-size: 0.9rem; font-weight: 600;">← Back to the Wall</a>
+            
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span style="font-size: 0.85rem; color: var(--accent);">Appreciate this work?</span>
+                <button style="background: transparent; border: 1px solid var(--text); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.3s;" 
+                        onmouseover="this.style.background='#000'; this.style.color='#fff';" 
+                        onmouseout="this.style.background='transparent'; this.style.color='#000';">
+                    Like Piece
+                </button>
+            </div>
+        </div>
+    </footer>
+</article>
+
+<style>
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    /* Making the first letter of the content a 'drop cap' for that premium feel */
+    article .content::first-letter {
+        float: left;
+        font-family: 'Playfair Display', serif;
+        font-size: 5rem;
+        line-height: 1;
+        margin-right: 15px;
+        font-weight: 700;
+    }
+</style>
 {% endblock %}

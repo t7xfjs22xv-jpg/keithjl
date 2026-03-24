@@ -1,23 +1,24 @@
 {% extends 'blog/base.html' %}
-{% block content %}
-<div class="card">
-  <h2>Log In</h2>
-  <form method="post" novalidate>
-    {% csrf_token %}
-    {{ form.non_field_errors }}
 
-    <div>
-      <label>Username</label>
-      {{ form.username }}
-      {{ form.username.errors }}
-    </div>
-    <div>
-      <label>Password</label>
-      {{ form.password }}
-      {{ form.password.errors }}
-    </div>
-    <button class="btn" type="submit">Login</button>
-  </form>
-  <p>Need an account? <a href="{% url 'signup' %}">Sign up</a></p>
+{% block content %}
+<div style="max-width: 400px; margin: 10vh auto; padding: 3rem; background: #fff; border: 1px solid var(--border); border-radius: 2px;">
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Welcome Back</h2>
+    <p style="text-align: center; color: var(--accent); font-size: 0.85rem; margin-bottom: 2rem;">Continue your journey through the library.</p>
+    
+    <form method="POST" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        {% csrf_token %}
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Username</label>
+            {{ form.username }}
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Password</label>
+            {{ form.password }}
+        </div>
+        <button type="submit" class="btn-primary" style="border: none; cursor: pointer; margin-top: 1rem;">Sign In</button>
+    </form>
+    <p style="text-align: center; margin-top: 2rem; font-size: 0.85rem;">
+        New here? <a href="{% url 'signup' %}" style="color: #000; font-weight: 600; text-decoration: none;">Join the Community</a>
+    </p>
 </div>
 {% endblock %}

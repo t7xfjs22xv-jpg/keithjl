@@ -1,40 +1,80 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whispers of Ink</title>
-    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}" />
-  </head>
-  <body>
-    <header class="container">
-      <h1>Whispers of Ink</h1>
-      <p class="small-meta">A quiet library of emotions and thoughts.</p>
-      <nav>
-        <a href="{% url 'landing' %}">Home</a> •
-        <a href="{% url 'about' %}">About</a> •
-        <a href="{% url 'blog_view' %}">Writing Wall</a> •
-        <a href="{% url 'create_post' %}">Create</a> •
-        {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Sign Up</a>
-        {% endif %}
-      </nav>
-    </header>
-
-    <main class="container">
-      {% if messages %}
-      {% for message in messages %}
-      <div class="message">{{ message }}</div>
-      {% endfor %}
-      {% endif %}
-
-      {% block content %}{% endblock %}
-    </main>
-
-    <script src="{% static 'blog/js/like.js' %}"></script>
-  </body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fcfcfc;
+            --text: #121212;
+            --accent: #757575;
+            --border: #eaeaea;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+        nav {
+            padding: 2.5rem 10%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+        .nav-links a {
+            margin-left: 25px;
+            text-decoration: none;
+            color: var(--accent);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover { color: #000; }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .btn-primary {
+            background: var(--text);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 2px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .btn-primary:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'landing' %}" class="logo">Whispers of Ink.</a>
+        <div class="nav-links">
+            <a href="{% url 'blog_view' %}">The Wall</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'create_post' %}">Write</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
 </html>
