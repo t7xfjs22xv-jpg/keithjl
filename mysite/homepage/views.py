@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.contrib.auth.forms import AuthenticationForm
 from .models import Post, Comment
 from .forms import PostForm, SignUpForm
+from django.core.management import call_command # <-- New import
 
 def landing_page(request):
     return render(request, 'blog/landing.html')
@@ -51,6 +52,13 @@ def create_post(request):
     return render(request, 'blog/create.html', {'form': form})
 
 def blog_view(request):
+    # This block fixes the "No such table" error automatically on Render
+    try:
+        call_command('makemigrations', 'homepage', interactive=False)
+        call_command('migrate', 'homepage', interactive=False)
+    except Exception:
+        pass
+
     posts = Post.objects.all().order_by('-created_at')
     return render(request, 'blog/blog.html', {'posts': posts})
 
