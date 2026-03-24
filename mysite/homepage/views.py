@@ -15,12 +15,7 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            # Create user safely to avoid Integrity and KeyErrors
-            user = User.objects.create_user(
-                username=form.cleaned_data['username'],
-                email=form.cleaned_data.get('email', ''), 
-                password=form.cleaned_data['password']
-            )
+            user = form.save() # UserCreationForm handles the hashing/saving
             login(request, user)
             return redirect('create_post')
     else:

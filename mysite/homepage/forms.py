@@ -1,14 +1,15 @@
 from django import forms
 from .models import Post, Comment
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm # <-- Add this
 
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'category', 'content']
 
-class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+# Use UserCreationForm instead of ModelForm
+class SignUpForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['username'] # Email and password are handled automatically
