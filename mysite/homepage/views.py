@@ -16,10 +16,10 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            # Create the user the standard Django way
+            # Create the user but get the email safely
             user = User.objects.create_user(
                 username=form.cleaned_data['username'],
-                email=form.cleaned_data['email'],
+                email=form.cleaned_data.get('email', ''), # Use .get to avoid KeyError
                 password=form.cleaned_data['password']
             )
             login(request, user)
@@ -27,16 +27,6 @@ def signup_view(request):
     else:
         form = SignUpForm()
     return render(request, 'blog/signup.html', {'form': form})
-def login_view(request):
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('create_post')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'blog/login.html', {'form': form})
 
 def logout_view(request):
     logout(request)
