@@ -1,13 +1,14 @@
 from django import forms
 from .models import Post, Comment
+from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
-    # This dropdown matches your theme categories
-    category = forms.ChoiceField(choices=[
-        ('Love', 'Love'), ('Life', 'Life'), ('Hope', 'Hope'), 
-        ('Youth', 'Youth'), ('Pain', 'Pain'), ('Dreams', 'Dreams'), ('Other', 'Other')
-    ])
-    
     class Meta:
-        model = Post  # Fixed: Points to Post, not User
+        model = Post
         fields = ['title', 'category', 'content']
+
+class SignUpForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = User
+        fields = ['username', 'password']
