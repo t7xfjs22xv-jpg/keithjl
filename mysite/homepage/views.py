@@ -16,11 +16,14 @@ def signup_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save() # Automatically handles all database fields like last_login
-            return redirect("login") # Matches your login page's URL name
+            # Save the user but don't commit to the database yet, so we can fix the last_login field
+            user = form.save(commit=False)
+            # Explicitly set last_login the way PostgreSQL expects (Django handles this perfectly)
+            user.last_login = None
+            user.save() # Now save the fully valid user to your permanent database
+            return redirect("login")
     else:
         form = UserCreationForm()
-    # Fixed template path to match all your other templates (stored in /blog/)
     return render(request, "blog/signup.html", {"form": form})
 
 def login_view(request):
