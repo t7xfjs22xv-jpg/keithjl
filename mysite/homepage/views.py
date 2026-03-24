@@ -12,15 +12,14 @@ def landing_page(request):
     return render(request, 'blog/landing.html')
 
 def signup_view(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save() # UserCreationForm handles the hashing/saving
-            login(request, user)
-            return redirect('create_post')
+            form.save() # Automatically handles all database fields like last_login
+            return redirect("login") # Swap "login" for your login page's name if needed
     else:
-        form = SignUpForm()
-    return render(request, 'blog/signup.html', {'form': form})
+        form = UserCreationForm()
+    return render(request, "signup.html", {"form": form})
 
 def login_view(request):
     if request.method == 'POST':
