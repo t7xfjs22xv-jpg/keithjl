@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.contrib.auth.forms import AuthenticationForm
+# Added missing UserCreationForm import here to fix your NameError
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User 
 from django.core.management import call_command
 from .models import Post, Comment
@@ -16,10 +17,11 @@ def signup_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save() # Automatically handles all database fields like last_login
-            return redirect("login") # Swap "login" for your login page's name if needed
+            return redirect("login") # Matches your login page's URL name
     else:
         form = UserCreationForm()
-    return render(request, "signup.html", {"form": form})
+    # Fixed template path to match all your other templates (stored in /blog/)
+    return render(request, "blog/signup.html", {"form": form})
 
 def login_view(request):
     if request.method == 'POST':
